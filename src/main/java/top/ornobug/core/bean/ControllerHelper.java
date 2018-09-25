@@ -50,16 +50,17 @@ public class ControllerHelper {
         for (Request request : REQUEST_HANDLER_MAP.keySet()) {
             String[] paths = request.getPath();
             String[] requestMethods = request.getRequestMethods();
-            if (ArrayUtils.contains(paths, requestPath.toUpperCase())
-                    && ArrayUtils.contains(requestMethods, requestMethod)) {
+            if (ArrayUtils.contains(paths, requestPath)
+                    && ArrayUtils.contains(requestMethods, requestMethod.toUpperCase())) {
                 requestHandler = REQUEST_HANDLER_MAP.get(request);
+                LOGGER.debug("find requestPath[" + requestPath + "] and requestMethod[" + requestMethod + "]");
                 break;
             }
         }
 
         if (null == requestHandler) {
-            LOGGER.error("no requestMapping![" + requestPath + "][" + requestPath + "]");
-            throw new RuntimeException("no requestMapping![" + requestPath + "][" + requestPath + "]");
+            LOGGER.error("no requestMapping![" + requestPath + "][" + requestMethod + "]");
+            throw new RuntimeException("no requestMapping![" + requestPath + "][" + requestMethod + "]");
         }
 
         return requestHandler;

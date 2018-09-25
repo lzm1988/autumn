@@ -16,6 +16,7 @@ public class AutumnConfig {
     private static final String VIEW_PREFIX = "autumn.view.prefix";
     private static final String VIEW_SUFFIX = "autumn.view.suffix";
     private static final String STATIC_PATH = "autumn.view.static.path";
+    private static final String HOME_PAGE = "autumn.view.home.page";
 
     private static final Properties PROPERTIES = PropertiesUtil.loadProperties(CONFIG_FILE);
 
@@ -49,5 +50,9 @@ public class AutumnConfig {
 
     public String getJdbcDriver() {
         return PropertiesUtil.getString(PROPERTIES, JDBC_DRIVER);
+    }
+
+    public static String getHomePage() {
+        return PropertiesUtil.getString(PROPERTIES, HOME_PAGE);
     }
 }
