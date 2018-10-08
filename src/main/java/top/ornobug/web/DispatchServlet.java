@@ -3,10 +3,12 @@ package top.ornobug.web;
 import top.ornobug.common.JsonUtil;
 import top.ornobug.common.ReflectionUtil;
 import top.ornobug.common.WebUtil;
+import top.ornobug.core.bean.AutumnConfig;
 import top.ornobug.core.bean.BeanHelper;
 import top.ornobug.core.bean.ControllerHelper;
+import top.ornobug.web.parser.FreemarkerParser;
 import top.ornobug.web.view.JsonView;
-import top.ornobug.web.view.View;
+import top.ornobug.web.view.TemplateView;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +29,7 @@ public class DispatchServlet extends HttpServlet {
         String requestPath = req.getPathInfo();
 
         if ("/".equals(requestPath)) {
-            WebUtil.redirectRequest("/index", req, resp);
+            WebUtil.redirectRequest(AutumnConfig.getHomePage(), req, resp);
         }
 
         RequestHandler requestHandler = ControllerHelper.getRequestHandler(requestPath, requestMethod);
@@ -37,8 +39,11 @@ public class DispatchServlet extends HttpServlet {
         RequestParam requestParam = new RequestParam(readParam(req));
         Method requestMappingMethod = requestHandler.getMethod();
         Object result = ReflectionUtil.invokeMethod(controllerBean, requestMappingMethod, requestParam);
-        if (result instanceof View) {
-
+        if (result instanceof TemplateView) {
+            TemplateView templateView = (TemplateView) result;
+            if ("freemarker".equalsIgnoreCase(AutumnConfig.getTemplateEngine())) {
+                FreemarkerParser.parse(templateView.getViewName(), templateView.getModel(), resp);
+            }
         } else if (result instanceof JsonView) {
             JsonView jsonView = (JsonView) result;
             Object data = jsonView.getData();
