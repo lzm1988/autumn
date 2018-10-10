@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 持有bean,bean容器
  */
 
-public class BeanHelper {
+public class BeanHolder {
 
     /**
      * 存放class与bean的映射

@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ControllerHelper {
+public class ControllerHolder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ControllerHolder.class);
 
     private static final Map<Request, RequestHandler> REQUEST_HANDLER_MAP = new ConcurrentHashMap<>();
 

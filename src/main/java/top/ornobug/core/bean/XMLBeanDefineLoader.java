@@ -55,11 +55,11 @@ public class XMLBeanDefineLoader extends DefaultHandler {
             System.out.println(attributes.getValue("id") + ":" + attributes.getValue("class"));
             String beanName = attributes.getValue("id");
             Class<?> cls = ClassUtil.loadClass(attributes.getValue("class"), true);
-            if (!BeanHelper.getClassBeanMap().containsKey(cls)) {
+            if (!BeanHolder.getClassBeanMap().containsKey(cls)) {
                 // class容器中不存在，就放入容器
                 Object bean = ReflectionUtil.newInstance(cls);
-                BeanHelper.putClassBeanMap(cls, bean);
-                BeanHelper.putNameBeanMap(beanName, bean);
+                BeanHolder.putClassBeanMap(cls, bean);
+                BeanHolder.putNameBeanMap(beanName, bean);
             }
 
         }

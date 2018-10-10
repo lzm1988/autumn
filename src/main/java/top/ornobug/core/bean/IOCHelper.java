@@ -12,7 +12,7 @@ public class IOCHelper {
 
     public static void init() {
         // 获取bean的映射，这些已经初始化好了的bean的实例
-        Map<Class<?>, Object> classBeanMap = BeanHelper.getClassBeanMap();
+        Map<Class<?>, Object> classBeanMap = BeanHolder.getClassBeanMap();
         if (CollectionUtil.isNotEmpty(classBeanMap)) {
             for (Map.Entry<Class<?>, Object> entry : classBeanMap.entrySet()) {
                 Class<?> beanClass = entry.getKey();

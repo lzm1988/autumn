@@ -4,8 +4,8 @@ import top.ornobug.common.JsonUtil;
 import top.ornobug.common.ReflectionUtil;
 import top.ornobug.common.WebUtil;
 import top.ornobug.core.bean.AutumnConfig;
-import top.ornobug.core.bean.BeanHelper;
-import top.ornobug.core.bean.ControllerHelper;
+import top.ornobug.core.bean.BeanHolder;
+import top.ornobug.core.bean.ControllerHolder;
 import top.ornobug.web.parser.FreemarkerParser;
 import top.ornobug.web.view.JsonView;
 import top.ornobug.web.view.TemplateView;
@@ -30,9 +30,9 @@ public class DispatchServlet extends HttpServlet {
         if ("/".equals(requestPath)) {
             WebUtil.redirectRequest(AutumnConfig.getHomePage(), req, resp);
         } else {
-            RequestHandler requestHandler = ControllerHelper.getRequestHandler(requestPath, requestMethod);
+            RequestHandler requestHandler = ControllerHolder.getRequestHandler(requestPath, requestMethod);
             Class<?> controllerClass = requestHandler.getControllerClass();
-            Object controllerBean = BeanHelper.getBean(controllerClass);
+            Object controllerBean = BeanHolder.getBean(controllerClass);
 
             RequestParam requestParam = new RequestParam(readParam(req));
             Method requestMappingMethod = requestHandler.getMethod();
