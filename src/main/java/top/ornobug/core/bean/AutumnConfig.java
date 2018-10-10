@@ -19,6 +19,7 @@ public class AutumnConfig {
     private static final String HOME_PAGE = "autumn.view.home.page";
     private static final String TEMPLATE_ENGINE = "autumn.view.engine";
     private static final String BEAN_DEFINE_LOCATION = "autumn.bean.define.location";
+    private static final String TEMPLATE_ENCODING = "autumn.template.encoding";
 
     private static final Properties PROPERTIES = PropertiesUtil.loadProperties(CONFIG_FILE);
 
@@ -64,5 +65,9 @@ public class AutumnConfig {
 
     public static String getBeanDefineLocation() {
         return PropertiesUtil.getString(PROPERTIES, BEAN_DEFINE_LOCATION);
+    }
+
+    public static String getTemplateEncoding() {
+        return PropertiesUtil.getString(PROPERTIES, TEMPLATE_ENCODING);
     }
 }
