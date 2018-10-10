@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * 持有从基础包下加载的类
  */
-public class ClassHelper {
+public class ClassScanner {
 
     private static final Set<Class<?>> CLASS_SET = new HashSet<>();
 

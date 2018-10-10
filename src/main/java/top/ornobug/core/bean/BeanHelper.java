@@ -22,12 +22,12 @@ public class BeanHelper {
     private static final Map<String, Object> NAME_BEAN_MAP = new ConcurrentHashMap<>();
 
     public static void init() {
-        Set<Class<?>> classSet = ClassHelper.getBeanSet();
+        Set<Class<?>> classSet = ClassScanner.getBeanSet();
         for (Class cls : classSet) {
             Object instance = ReflectionUtil.newInstance(cls);
             CLASS_BEAN_MAP.put(cls, instance);
         }
-        Map<String, Class<?>> map = ClassHelper.getServiceNameMap();
+        Map<String, Class<?>> map = ClassScanner.getServiceNameMap();
         NAME_BEAN_MAP.putAll(map);
         XMLBeanDefineLoader.init();
     }

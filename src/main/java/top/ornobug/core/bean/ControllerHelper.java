@@ -22,7 +22,7 @@ public class ControllerHelper {
     private static final Map<Request, RequestHandler> REQUEST_HANDLER_MAP = new ConcurrentHashMap<>();
 
     public static void init() {
-        Set<Class<?>> controllerSet = ClassHelper.getControllerSet();
+        Set<Class<?>> controllerSet = ClassScanner.getControllerSet();
         if (CollectionUtil.isNotEmpty(controllerSet)) {
             for (Class<?> controller : controllerSet) {
                 Method[] methods = controller.getDeclaredMethods();
