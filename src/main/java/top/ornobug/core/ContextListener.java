@@ -15,8 +15,6 @@ public class ContextListener implements ServletContextListener {
                 .getServletRegistration("default");
         defaultServletRegistration.addMapping("/favicon.ico", "/static/*", "/index.html");
 
-        // ServletRegistration jspServletRegistration = sce.getServletContext().getServletRegistration("jsp");
-        // jspServletRegistration.addMapping("/view/*");
     }
 
     @Override

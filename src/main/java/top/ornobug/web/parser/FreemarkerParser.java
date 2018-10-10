@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * freemarker 视图解析器
+ * @author liuzhimeng
  */
 
 public class FreemarkerParser {
@@ -18,7 +19,6 @@ public class FreemarkerParser {
         Reader reader = null;
         try {
             String path = Thread.currentThread().getContextClassLoader().getResource("").toString();
-            // path = path.replace('/', '\\'); // 将/换成\
             path = path.replace("file:", "")
                     .replace("classes/", "")
                     .replace("WEB-INF/", "")

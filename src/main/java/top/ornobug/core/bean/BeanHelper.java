@@ -21,12 +21,15 @@ public class BeanHelper {
      */
     private static final Map<String, Object> NAME_BEAN_MAP = new ConcurrentHashMap<>();
 
-    static {
+    public static void init() {
         Set<Class<?>> classSet = ClassHelper.getBeanSet();
         for (Class cls : classSet) {
             Object instance = ReflectionUtil.newInstance(cls);
             CLASS_BEAN_MAP.put(cls, instance);
         }
+        Map<String, Class<?>> map = ClassHelper.getServiceNameMap();
+        NAME_BEAN_MAP.putAll(map);
+        XMLBeanDefineLoader.init();
     }
 
     public static Map<Class<?>, Object> getClassBeanMap() {
@@ -35,6 +38,16 @@ public class BeanHelper {
 
     public static Map<String, Object> getNameBeanMap() {
         return NAME_BEAN_MAP;
+    }
+
+    public static Map<Class<?>, Object> putClassBeanMap(Class<?> key, Object val) {
+        CLASS_BEAN_MAP.put(key, val);
+        return CLASS_BEAN_MAP;
+    }
+
+    public static Map<Class<?>, Object> putNameBeanMap(String key, Object val) {
+        NAME_BEAN_MAP.put(key, val);
+        return CLASS_BEAN_MAP;
     }
 
     public static <T> T getBean(Class<T> cls) {

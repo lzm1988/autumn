@@ -14,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Map;
@@ -24,32 +23,37 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DispatchServlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) {
         String requestMethod = req.getMethod().toUpperCase();
         String requestPath = req.getPathInfo();
 
         if ("/".equals(requestPath)) {
             WebUtil.redirectRequest(AutumnConfig.getHomePage(), req, resp);
-        }
+        } else {
+            RequestHandler requestHandler = ControllerHelper.getRequestHandler(requestPath, requestMethod);
+            Class<?> controllerClass = requestHandler.getControllerClass();
+            Object controllerBean = BeanHelper.getBean(controllerClass);
 
-        RequestHandler requestHandler = ControllerHelper.getRequestHandler(requestPath, requestMethod);
-        Class<?> controllerClass = requestHandler.getControllerClass();
-        Object controllerBean = BeanHelper.getBean(controllerClass);
-
-        RequestParam requestParam = new RequestParam(readParam(req));
-        Method requestMappingMethod = requestHandler.getMethod();
-        Object result = ReflectionUtil.invokeMethod(controllerBean, requestMappingMethod, requestParam);
-        if (result instanceof TemplateView) {
-            TemplateView templateView = (TemplateView) result;
-            if ("freemarker".equalsIgnoreCase(AutumnConfig.getTemplateEngine())) {
-                FreemarkerParser.parse(templateView.getViewName(), templateView.getModel(), resp);
+            RequestParam requestParam = new RequestParam(readParam(req));
+            Method requestMappingMethod = requestHandler.getMethod();
+            Object result = null;
+            if (requestMappingMethod.getParameterCount() == 0) {
+                result = ReflectionUtil.invokeMethod(controllerBean, requestMappingMethod, null);
+            } else {
+                result = ReflectionUtil.invokeMethod(controllerBean, requestMappingMethod, requestParam);
             }
-        } else if (result instanceof JsonView) {
-            JsonView jsonView = (JsonView) result;
-            Object data = jsonView.getData();
-            if (null != data) {
-                resp.setContentType("application/json; charset=utf-8");
-                WebUtil.writeDataToResponse(JsonUtil.obj2Json(data), resp);
+            if (result instanceof TemplateView) {
+                TemplateView templateView = (TemplateView) result;
+                if ("freemarker".equalsIgnoreCase(AutumnConfig.getTemplateEngine())) {
+                    FreemarkerParser.parse(templateView.getViewName(), templateView.getModel(), resp);
+                }
+            } else if (result instanceof JsonView) {
+                JsonView jsonView = (JsonView) result;
+                Object data = jsonView.getData();
+                if (null != data) {
+                    resp.setContentType("application/json; charset=utf-8");
+                    WebUtil.writeDataToResponse(JsonUtil.obj2Json(data), resp);
+                }
             }
         }
     }

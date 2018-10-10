@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class IOCHelper {
 
-    static {
+    public static void init() {
         // 获取bean的映射，这些已经初始化好了的bean的实例
         Map<Class<?>, Object> classBeanMap = BeanHelper.getClassBeanMap();
         if (CollectionUtil.isNotEmpty(classBeanMap)) {
