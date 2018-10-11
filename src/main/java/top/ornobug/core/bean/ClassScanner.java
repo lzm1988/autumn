@@ -82,4 +82,36 @@ public class ClassScanner {
         classSet.addAll(getComponentSet());
         return classSet;
     }
+
+    /**
+     * 获取父类下的子类
+     *
+     * @param superClass
+     * @return
+     */
+    public static Set<Class<?>> getClassSetBySuper(Class<?> superClass) {
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        for (Class<?> cls : CLASS_SET) {
+            if (cls.isAssignableFrom(superClass) && !cls.equals(superClass)) {
+                classSet.add(cls);
+            }
+        }
+        return classSet;
+    }
+
+    /**
+     * 获取指定注解修饰的类
+     *
+     * @param annotationClass
+     * @return
+     */
+    public static Set<Class<?>> getClassSetByAnnotation(Class<? extends Annotation> annotationClass) {
+        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        for (Class<?> cls : CLASS_SET) {
+            if (cls.isAnnotationPresent(annotationClass)) {
+                classSet.add(cls);
+            }
+        }
+        return classSet;
+    }
 }
